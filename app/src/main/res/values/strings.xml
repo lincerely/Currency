@@ -3,5 +3,6 @@
     <string name="button_text">Toast le?</string>
     <string name="button_disable_text">Dun Click la</string>
     <string name="about">About</string>
+    <string name="record">Record</string>
     <string name="magic">You search for %1$s on a <i>%2$s</i>.</string>
 </resources>

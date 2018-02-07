@@ -1,5 +1,6 @@
 package lincolnli2.scm.currency
 
+import android.app.Application
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -15,8 +16,13 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import io.paperdb.Paper
 import org.jetbrains.anko.toast
 import org.json.JSONObject
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
@@ -43,8 +49,18 @@ class MainActivity : AppCompatActivity() {
             val fromEditText = findViewById<EditText>(R.id.from_input)
             intent.putExtra(INPUT_KEY,fromEditText.text.toString())
             startActivity(intent)
+        }else if(item!!.itemId == R.id.record_button)
+        {
+            //select about, display about activity
+            val intent = Intent(this, RecordActivity::class.java)
+            startActivity(intent)
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MyApplication.instance.saveRecord()
     }
 
     fun toastMe( view: View)
@@ -86,6 +102,12 @@ class MainActivity : AppCompatActivity() {
 
             val toEditText = findViewById<EditText>(R.id.to_input)
             toEditText.setText((fromInput * cur).toString())
+            addRecord(fromInput,fromInput * cur)
         }
+    }
+
+    private fun addRecord( from: Double, to: Double)
+    {
+        MyApplication.instance.records.add(Record(from.toFloat(),to.toFloat(), Date()))
     }
 }
